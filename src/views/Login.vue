@@ -1,25 +1,25 @@
 <script setup lang="ts">
-export default {
-  props: ['foo'],
-  created() {
-    // props are exposed on `this`
-    console.log(this.foo)
-  }
-}
-
 import { ref } from 'vue'
-import MyglicUser from './model/MyglicUser.ts;
+import { useUserStore } from '../stores/userStore.ts'
+import router from '../plugins/router'
+import MyGlicUser from "../models/MyGlicUser.ts"
 
+const userStore = useUserStore()
 const URL = "http://localhost:8180/v1/user"
 
-const user: MyGlicUser = MyglicUser
-
 const userLogin = {
-  login: string = '' 
-  passwd: string = ''
+  login: "",
+  passwd: "",
 }
 
-console.log("Load OK")
+let user: MyGlicUser = {
+  type: "",
+  id: 0,
+  isDeleted: false,
+  isActive: true,
+  login: "",
+  passwd: "",
+}
 
 function doLogin() {
   const requestOptions = {
@@ -27,7 +27,7 @@ function doLogin() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userLogin)
   }
-  fetch(URL, requestOptions)
+  fetch(URL + "/doLogin", requestOptions)
     .then(async response => {
       const data = await response.json();
       // check for error response
@@ -36,15 +36,19 @@ function doLogin() {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
       }
-      // console.log(data)
-      this.user.type = data.type;
-      this.user.id = data.id;
-      this.user.login = data.login
-      this.user.isDeleted = data.isDeleted;
-      this.user.isActive = data.isActive;
-      this.user.login = data.login;
-      this.user.passwd = data.passwd;
-      console.log(this.user)
+      
+      user.type = data.type;
+      user.id = data.id;
+      user.login = data.login
+      user.isDeleted = data.isDeleted;
+      user.isActive = data.isActive;
+      user.login = data.login;
+      user.passwd = data.passwd;
+      console.log(user)
+      userStore.setUser(user)
+      router.push({
+        name: 'mylist',
+      })
     })
     .catch(error => {
       // this.errorMessage = error;
@@ -57,11 +61,7 @@ function doLogin() {
 <template>
   <section class="dark:bg-gray-900">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold dark:text-white">
-          <img class="w-8 h-8 mr-2" src="../assets/marvin.png" 
-              alt="logo">
-          Myglic    
-      </a>
+      
       <div class="w-full bg-gray-800 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
@@ -109,7 +109,7 @@ function doLogin() {
             </div>
             <button type="button" @click="doLogin" 
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-              Sign innn
+              Sign in
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet? 
@@ -122,13 +122,6 @@ function doLogin() {
   </section>
 </template>
 
-<style scoped>
+<style>
 
-input:focus{
-  border: 20px;
-}
-
-button{
-  margin: 20px;
-}
 </style>

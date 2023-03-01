@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-interface MyGlicUser {
+export interface MyGlicUser {
   type: string
   id: number;
   isDeleted: boolean;
@@ -8,5 +6,3 @@ interface MyGlicUser {
   login: string;
   passwd: string;
 }
-
-</script>

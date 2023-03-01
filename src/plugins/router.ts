@@ -9,22 +9,22 @@ const routes = [
   },
   {
     path: '/login',
-    component: () => import('../views/LoginView.vue'),
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/about',
     component: () => import('../views/About.vue'),
   },
   {
-    path: '/main',
-    component: () => import('../views/MainView.vue'),
-    name: 'main',
-    props: true,
+    path: '/mylist',
+    component: () => import('../views/UserList.vue'),
+    name: 'mylist',
   },
-  // {
-  //   path: '/singup',
-  //   component: () => import('../views/CreateUser.vue'),
-  // },
+  {
+    path: '/newmeasure',
+    component: () => import('../views/NewMeasure.vue'),
+    name: 'newmeasure',
+  },
 ]
 
 const router =  createRouter({
