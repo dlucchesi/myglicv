@@ -41,12 +41,13 @@ function inactivateMeasure() {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
       }
-      console.log(data)
+      // console.log(data)
+      measureStore.measure = null
       router.push({ name: 'mylist' })	
     })
     .catch(error => {
       // this.errorMessage = error;
-      console.error("There was an error!", error);
+      console.error("Error on inactivate measure!", error);
     });
 }
 

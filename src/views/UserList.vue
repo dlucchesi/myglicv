@@ -109,8 +109,7 @@ retrieveList(userLogged.id)
                           <button @click="inactivate(measure)"
                               type="button" 
                               class="btn btn-primary btn-floating btn-rounded danger">
-                              <img src="../assets/trash.svg"  alt="Trash" />
-                              <font-awesome-icon icon="fa-solid fa-trash" />
+                              <img src="../assets/trash.svg"  alt="Trash" height="150" width="150" />
                         </button>
                         </td>
                         <td class="whitespace-nowrap px-6 py-4" >
