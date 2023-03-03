@@ -25,6 +25,11 @@ const routes = [
     component: () => import('../views/NewMeasure.vue'),
     name: 'newmeasure',
   },
+  {
+    path: '/inactivatemeasure',
+    component: () => import('../views/InactivateMeasure.vue'),
+    name: 'inactivatemeasure',
+  },
 ]
 
 const router =  createRouter({
