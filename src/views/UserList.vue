@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '../stores/userStore.ts'
+import { useMeasureStore } from '../stores/MeasureStore.ts'
 import router from '../plugins/router'
 import MyGlicUser from "../models/MyGlicUser.ts"
 import MyglicMeasure from "../models/MyglicMeasure.ts"
+import { DATE_FORMAT } from "../components/MyDateUtils.ts"
+import * as dayjs from 'dayjs'
+import 'dayjs/locale/pt-br' // import locale
+dayjs.locale('pt-br') // set locale
 
 const URL = "http://localhost:8180/v1/measure"
 
 const userStore = useUserStore()
+const measureStore = useMeasureStore()
+
 const userLogged: MyGlicUser = userStore.user
 const userMeasures:Array<MyglicMeasure> = new Array<MyglicMeasure>()
 const uMs:Ref<Array<MyglicMeasure>> = ref(userMeasures)
@@ -33,10 +40,12 @@ function retrieveList(userId: Number) {
         return Promise.reject(error);
       }
       console.log(data)
+      let cnt:Number = 1
       data.forEach((element: any) => {
         let m: MyglicMeasure = {
+          count: cnt++,
           id: element.id,
-          dtEntry: element.dtEntry,
+          dtEntry: dayjs(element.dtEntry).format(DATE_FORMAT) ,
           measureEntry: element.measureEntry,
           obs: element.obs,
           isActive: element.isActive,
@@ -50,6 +59,11 @@ function retrieveList(userId: Number) {
       // this.errorMessage = error;
       console.error("There was an error!", error)
     })
+}
+
+function inactivate(m: MyglicMeasure) {
+  measureStore.measure = m
+  router.push({ name: 'inactivatemeasure' })
 }
 
 retrieveList(userLogged.id)
@@ -69,17 +83,18 @@ retrieveList(userLogged.id)
         <button @click="router.push({ name: 'newmeasure' })"
               type="button" 
               class="btn btn-primary btn-floating btn-rounded">
-            +
-          </button>
+          +
+        </button>
 
         <div class="flex flex-col overflow-x-auto">
             <div class="sm:-mx-6 lg:-mx-8">
               <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div class="overflow-x-auto">
-                  <table class="min-w-full text-left text-sm font-light">
+                  <table class="min-w-full text-sm font-light place-items-center">
                     <thead class="border-b font-medium dark:border-neutral-500">
                       <tr>
                         <th scope="col" class="px-6 py-4">#</th>
+                        <th scope="col" class="px-6 py-4">Delete</th>
                         <th scope="col" class="px-6 py-4">Active</th>
                         <th scope="col" class="px-6 py-4">Datetime</th>
                         <th scope="col" class="px-6 py-4">Rate</th>
@@ -89,12 +104,21 @@ retrieveList(userLogged.id)
                     <tbody>
                       <tr v-for="measure in uMs" 
                           class="border-b dark:border-neutral-500">
-                        <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{ measure.count }}</td>
+                        <td class="whitespace-nowrap px-6 py-4 font-medium">
+                          <button @click="inactivate(measure)"
+                              type="button" 
+                              class="btn btn-primary btn-floating btn-rounded danger">
+                              <img src="../assets/trash.svg"  alt="Trash" />
+                              <font-awesome-icon icon="fa-solid fa-trash" />
+                        </button>
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4" >
                           <input v-model="measure.isActive"
                               id="isactive" 
                               aria-describedby="is Active" 
                               type="checkbox" 
+                              disabled
                               class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">{{ measure.dtEntry }}</td>

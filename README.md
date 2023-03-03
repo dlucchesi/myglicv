@@ -1,18 +1,38 @@
-# Vue 3 + TypeScript + Vite
+# MyglicV
+My Glicemy Visual
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Description
+Myglic is a simple application to manage your glicemy. I start to develop this application to learn more about NodeJS, Vite, Vue 3 and TypeScript. 
+This still a work in progress. I hope you enjoy it.
 
-## Recommended IDE Setup
+### Features
+- Add a new glicemy rate
+- List all glicemy rates
+- Inactivate a glicemy rate
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+### Technologies
+- NodeJS
+- Vite
+- Vue 3 
+- Pinia
+- TypeScript
 
-## Type Support For `.vue` Imports in TS
+### What do you need to run this project?
+- NodeJS
+- Npm
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### How to run this project?
+**Important**: this project alone doesn't do anything (see the nex session)
+- Clone this repository
+- Access project folder
+- Run command: `npm install`
+- Verify if the folder *node_modules* was created
+- Run command: `npm run dev`
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+---
+## **IMPORTANT**
+This project is still a work in progress.
+And it is one of two parts -> this is the frontend part. The backend part is in https://github.com/dlucchesi/myglic
+
+
