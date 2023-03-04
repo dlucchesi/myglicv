@@ -7,6 +7,8 @@ import { MyGlicUser } from "../models/MyGlicUser"
 const userStore = useUserStore()
 const URL = "http://localhost:8180/v1/user"
 
+const emit = defineEmits(['userIsLogged'])
+
 const userLogin = {
   login: "",
   passwd: "",
@@ -44,16 +46,18 @@ function doLogin() {
       user.isActive = data.isActive;
       user.login = data.login;
       user.passwd = data.passwd;
-      console.log(user)
+      
       userStore.setUser(user)
       router.push({
         name: 'mylist',
       })
+      emit("userIsLogged")
     })
     .catch(error => {
       // this.errorMessage = error;
-      console.error("There was an error!", error);
-    });
+      console.error("There was an error!", error)
+      router.push({ name: 'error' })
+    })
 }
 
 </script>

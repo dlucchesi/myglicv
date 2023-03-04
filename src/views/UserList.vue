@@ -5,10 +5,7 @@ import { useMeasureStore } from '../stores/MeasureStore'
 import router from '../plugins/router'
 import { MyGlicUser } from "../models/MyGlicUser"
 import { MyGlicMeasure } from "../models/MyglicMeasure"
-import { DATE_FORMAT } from "../components/MyDateUtils"
-import * as dayjs from 'dayjs'
-import 'dayjs/locale/pt-br' // import locale
-dayjs.locale('pt-br') // set locale
+import { formatTimestampFromDate } from "../components/MyDateUtils"
 
 const URL = "http://localhost:8180/v1/measure"
 
@@ -19,7 +16,7 @@ const userLogged: MyGlicUser = userStore.user
 const userMeasures:Array<MyGlicMeasure> = new Array<MyGlicMeasure>()
 const uMs:Ref<Array<MyGlicMeasure>> = ref(userMeasures)
 
-if (userLogged.login == "") {
+if (userLogged==null || userLogged.login == "") {
   router.push({
     name: 'login',
   })
@@ -39,13 +36,13 @@ function retrieveList(userId: Number) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
       }
-      console.log(data)
+
       let cnt:Number = 1
       data.forEach((element: any) => {
         let m: MyglicMeasure = {
           count: cnt++,
           id: element.id,
-          dtEntry: dayjs(element.dtEntry).format(DATE_FORMAT) ,
+          dtEntry: formatTimestampFromDate(element.dtEntry),
           measureEntry: element.measureEntry,
           obs: element.obs,
           isActive: element.isActive,
@@ -58,6 +55,7 @@ function retrieveList(userId: Number) {
     .catch(error => {
       // this.errorMessage = error;
       console.error("There was an error!", error)
+      router.push({ name: 'error' })
     })
 }
 
@@ -72,8 +70,8 @@ retrieveList(userLogged.id)
 
 <template>
   <section class="dark:bg-grey-900/50">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <div class="w-full bg-gray-800 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div class="flex flex-col items-center justify-center py-8 mx-auto md:h-screen lg:py-0">
+      <div class="w-full bg-gray-800 rounded-lg shadow dark:border md:max-xl  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
             Welcome user: {{ userLogged.login }}
@@ -88,31 +86,31 @@ retrieveList(userLogged.id)
 
         <div class="flex flex-col overflow-x-auto">
             <div class="sm:-mx-6 lg:-mx-8">
-              <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+              <div class="inline-block min-w-full py-2 sm:px-1 lg:px-20">
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm font-light place-items-center">
                     <thead class="border-b font-medium dark:border-neutral-500">
                       <tr>
-                        <th scope="col" class="px-6 py-4">#</th>
-                        <th scope="col" class="px-6 py-4">Delete</th>
-                        <th scope="col" class="px-6 py-4">Active</th>
+                        <th scope="col" class="px-4 py-4">#</th>
+                        <th scope="col" class="px-4 py-4">Delete</th>
+                        <th scope="col" class="px-4 py-4">Active</th>
                         <th scope="col" class="px-6 py-4">Datetime</th>
-                        <th scope="col" class="px-6 py-4">Rate</th>
+                        <th scope="col" class="px-4 py-4">Rate</th>
                         <th scope="col" class="px-6 py-4">Obs.:</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="measure in uMs" 
                           class="border-b dark:border-neutral-500">
-                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{ measure.count }}</td>
-                        <td class="whitespace-nowrap px-6 py-4 font-medium">
+                        <td class="whitespace-nowrap px-4 py-4 font-medium">{{ measure.count }}</td>
+                        <td class="whitespace-nowrap px-4 py-4 font-medium">
                           <button @click="inactivate(measure)"
                               type="button" 
                               class="btn btn-primary btn-floating btn-rounded danger">
-                              <img src="../assets/trash.svg"  alt="Trash" height="150" width="150" />
+                              <img src="../assets/trash.svg"  alt="Trash" height="15" width="15" />
                         </button>
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4" >
+                        <td class="whitespace-nowrap px-4 py-4" >
                           <input v-model="measure.isActive"
                               id="isactive" 
                               aria-describedby="is Active" 
@@ -121,7 +119,7 @@ retrieveList(userLogged.id)
                               class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">{{ measure.dtEntry }}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{{ measure.measureEntry }}</td>
+                        <td class="whitespace-nowrap px-4 py-4">{{ measure.measureEntry }}</td>
                         <td class="whitespace-nowrap px-6 py-4">{{ measure.obs }}</td>
                       </tr>
                     </tbody>

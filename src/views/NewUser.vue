@@ -51,8 +51,9 @@ function saveUser() {
     })
     .catch(error => {
       // this.errorMessage = error;
-      console.error("There was an error!", error);
-    });
+      console.error("There was an error!", error)
+      router.push({ name: 'error' })
+    })
 }
 
 
