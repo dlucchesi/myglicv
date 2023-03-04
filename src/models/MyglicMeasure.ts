@@ -1,12 +1,12 @@
-import MyGlicUser from "./MyGlicUser.ts";
+import { MyGlicUser } from "./MyGlicUser";
 
-interface MyGlicMeasure {
+export interface MyGlicMeasure {
   type: string
-  id: number;
-  isDeleted: boolean;
-  isActive: boolean;
-  dtEntry: Date;
-  measureEntry: String;
-  obs: string;
-  user: MyGlicUser;
+  id: number
+  isDeleted: boolean
+  isActive: boolean
+  dtEntry: Date
+  measureEntry: number
+  obs: string
+  user: MyGlicUser
 }

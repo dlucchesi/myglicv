@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { MyGlicMeasure } from "../models/MyglicMeasure.ts";
+import { MyGlicMeasure } from "../models/MyglicMeasure";
 
 export const useMeasureStore = defineStore('measureStore',{
   state: () => {

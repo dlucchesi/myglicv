@@ -30,6 +30,11 @@ const routes = [
     component: () => import('../views/InactivateMeasure.vue'),
     name: 'inactivatemeasure',
   },
+  {
+    path: '/newuser',
+    component: () => import('../views/NewUser.vue'),
+    name: 'newuser',
+  },
 ]
 
 const router =  createRouter({

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '../stores/userStore.ts'
+import { useUserStore } from '../stores/userStore'
 import router from '../plugins/router'
-import MyGlicUser from "../models/MyGlicUser.ts"
+import { MyGlicUser } from "../models/MyGlicUser"
 
 const userStore = useUserStore()
 const URL = "http://localhost:8180/v1/user"
@@ -103,7 +103,7 @@ function doLogin() {
                   </div>
               </div>
               <div>
-                <a href="#" 
+                <a href="#"
                     class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
               </div>
             </div>
@@ -112,8 +112,11 @@ function doLogin() {
               Sign in
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet? 
-                <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+                <h2>Don’t have an account yet? </h2>
+                <button type="button" @click="router.push({name: 'newuser'})" 
+                      class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    Sign up
+                  </button>
             </p>
           </form>
         </div>

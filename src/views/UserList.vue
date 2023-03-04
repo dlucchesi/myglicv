@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '../stores/userStore.ts'
-import { useMeasureStore } from '../stores/MeasureStore.ts'
+import { useUserStore } from '../stores/userStore'
+import { useMeasureStore } from '../stores/MeasureStore'
 import router from '../plugins/router'
-import MyGlicUser from "../models/MyGlicUser.ts"
-import MyglicMeasure from "../models/MyglicMeasure.ts"
-import { DATE_FORMAT } from "../components/MyDateUtils.ts"
+import { MyGlicUser } from "../models/MyGlicUser"
+import { MyGlicMeasure } from "../models/MyglicMeasure"
+import { DATE_FORMAT } from "../components/MyDateUtils"
 import * as dayjs from 'dayjs'
 import 'dayjs/locale/pt-br' // import locale
 dayjs.locale('pt-br') // set locale
@@ -16,8 +16,8 @@ const userStore = useUserStore()
 const measureStore = useMeasureStore()
 
 const userLogged: MyGlicUser = userStore.user
-const userMeasures:Array<MyglicMeasure> = new Array<MyglicMeasure>()
-const uMs:Ref<Array<MyglicMeasure>> = ref(userMeasures)
+const userMeasures:Array<MyGlicMeasure> = new Array<MyGlicMeasure>()
+const uMs:Ref<Array<MyGlicMeasure>> = ref(userMeasures)
 
 if (userLogged.login == "") {
   router.push({
@@ -61,7 +61,7 @@ function retrieveList(userId: Number) {
     })
 }
 
-function inactivate(m: MyglicMeasure) {
+function inactivate(m: MyGlicMeasure) {
   measureStore.measure = m
   router.push({ name: 'inactivatemeasure' })
 }
