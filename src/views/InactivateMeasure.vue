@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import router from '../plugins/router'
-import { useUserStore } from '../stores/userStore.ts'
-import { useMeasureStore } from '../stores/MeasureStore.ts'
-import MyGlicUser from "../models/MyGlicUser.ts"
-import MyglicMeasure from "../models/MyglicMeasure.ts"
+import { useUserStore } from '../stores/userStore'
+import { useMeasureStore } from '../stores/MeasureStore'
+import { MyGlicUser } from "../models/MyGlicUser"
+import { MyGlicMeasure } from "../models/MyglicMeasure"
 
 const measureURL = "http://localhost:8180/v1/measure"
 const userURL = "http://localhost:8180/v1/user"
@@ -12,7 +12,7 @@ const userStore = useUserStore()
 const measureStore = useMeasureStore()
 
 const userLogged: MyGlicUser = userStore.user
-const measure: MyglicMeasure = measureStore.measure
+const measure: MyGlicMeasure = measureStore.measure
 
 if (userLogged.login == "") {
   router.push({
