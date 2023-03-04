@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
 import { useMeasureStore } from '../stores/MeasureStore'
 import { MyGlicUser } from "../models/MyGlicUser"
 import { MyGlicMeasure } from "../models/MyglicMeasure"
+import { formatDateFromStr, formatTimeFromStr } from "../components/MyDateUtils";
 
 const measureURL = "http://localhost:8180/v1/measure"
 const userURL = "http://localhost:8180/v1/user"
@@ -20,12 +22,17 @@ if (userLogged.login == "") {
   })
 }
 
-if (measure.id == "") {
+if (measure == null || (measure.id == null || measure.id == 0)) {
   console.error("Measure not found in store!")
   router.push({
-    name: 'login',
+    name: 'error',
   })
 }
+
+// Issue5: need to separate date and time
+const mDate = ref(measure.dtEntry.split(" ")[0])
+const mTime = ref(measure.dtEntry.split(" ")[1])
+
 
 function inactivateMeasure() {
   const requestOptions = {
@@ -34,11 +41,11 @@ function inactivateMeasure() {
   }
   fetch(measureURL + "/inactivate/" + measure.id, requestOptions)
     .then(async response => {
-      const data = await response.json();
+      // const data = await response.json();
       // check for error response
       if (!response.ok) {
         // get error message from body or default to response statusText
-        const error = (data && data.message) || response.statusText;
+        const error = response.statusText
         return Promise.reject(error);
       }
       // console.log(data)
@@ -47,8 +54,9 @@ function inactivateMeasure() {
     })
     .catch(error => {
       // this.errorMessage = error;
-      console.error("Error on inactivate measure!", error);
-    });
+      console.error("Error on inactivate measure!", error)
+      router.push({ name: 'error' })
+    })
 }
 
 
@@ -66,12 +74,24 @@ function inactivateMeasure() {
           <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submit">
             <div>
               <label for="date" 
-                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date and time</label>
-              <input  v-model="measure.dtEntry"
-                  type="datetime-local"
+                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date</label>
+              <input  v-model="mDate"
+                  type="string"
                   name="date" 
                   id="date"
-                  placeholder="2023-01-01 00:00:00" 
+                  placeholder="2023.01.01" 
+                  disabled="true"
+                  class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
+            </div>
+
+            <div>
+              <label for="time" 
+                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Time</label>
+              <input  v-model="mTime"
+                  type="time"
+                  name="time" 
+                  id="time"
+                  placeholder="00:00" 
                   disabled="true"
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
@@ -116,7 +136,7 @@ function inactivateMeasure() {
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 danger">
               Inactivate
             </button>
-            <button type="button" @click="router.back()" 
+            <button type="button" @click="router.push({ name: 'mylist' })" 
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
               Cancel
             </button>

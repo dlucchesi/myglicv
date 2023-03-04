@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
-import MyGlicUser from "../models/MyGlicUser"
-import MyglicMeasure from "../models/MyglicMeasure"
+import { MyGlicUser } from "../models/MyGlicUser"
+import { MyglicMeasure } from "../models/MyglicMeasure"
+
+import { getTimestampFromStr } from "../components/MyDateUtils";
+
 
 const measureURL = "http://localhost:8180/v1/measure"
 const userURL = "http://localhost:8180/v1/user"
@@ -20,6 +24,10 @@ let measure: MyglicMeasure = {
   user: userLogged,
 }
 
+// Issue5: need to separate date and time
+const mDate = ref(new Date().toLocaleDateString())
+const mTime = ref("00:00")
+
 if (userLogged.login == "") {
   router.push({
     name: 'login',
@@ -27,6 +35,7 @@ if (userLogged.login == "") {
 }
 
 function saveMeasure() {
+  measure.dtEntry = getTimestampFromStr(mDate.value, mTime.value)
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -42,12 +51,12 @@ function saveMeasure() {
         return Promise.reject(error);
       }
       
-      console.log(data)
-      router.push({ name: 'mylist' })	
+      router.push({ name: 'mylist' })
     })
     .catch(error => {
       // this.errorMessage = error;
       console.error("There was an error!", error);
+      router.push({ name: 'error' })
     });
 }
 
@@ -56,25 +65,38 @@ function saveMeasure() {
 
 <template>
   <section class="dark:bg-gray-900">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0">
       
       <div class="w-full bg-gray-800 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div class="p-6 md:space-y-1 sm:p-8  space-x-5">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
               Measure
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submit">
+          <form class="space-y-1 md:space-y-4" action="#" @submit.prevent="submit">
             <div>
               <label for="date" 
-                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date and time</label>
-              <input  v-model="measure.dtEntry"
-                  type="datetime-local"
+                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date</label>
+              <input  v-model="mDate"
+                  type="date"
                   name="date" 
                   id="date"
-                  placeholder="2023-01-01 00:00:00" 
+                  placeholder="2023.01.01" 
                   required="Empty date!!!" 
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
+
+            <div>
+              <label for="time" 
+                  class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Time</label>
+              <input  v-model="mTime"
+                  type="time"
+                  name="time" 
+                  id="time"
+                  placeholder="00:00" 
+                  required="Empty time!!!" 
+                  class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
+            </div>
+
             <div>
               <label for="measureEntry" class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Entry</label>
               <input v-model="measure.measureEntry"
@@ -114,7 +136,7 @@ function saveMeasure() {
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
               Save
             </button>
-            <button type="button" @click="router.back()" 
+            <button type="button" @click="router.push({ name: 'mylist' })" 
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
               Cancel
             </button>
