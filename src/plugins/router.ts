@@ -42,6 +42,11 @@ const routes = [
     component: () => import('../views/NewUser.vue'),
     name: 'newuser',
   },
+  {
+    path: '/usernotfound',
+    component: () => import('../views/error/UserNotFoundErr.vue'),
+    name: 'usernotfound',
+  },
 ]
 
 const router =  createRouter({
