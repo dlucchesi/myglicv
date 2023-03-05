@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '../stores/userStore'
+import { useMessageStore } from '../stores/MessageStore'
 import router from '../plugins/router'
 import { MyGlicUser } from "../models/MyGlicUser"
 
 const userStore = useUserStore()
+const messageStore = useMessageStore()
 const URL = "http://localhost:8180/v1/user"
+const usernotfound:boolean = false
 
 const emit = defineEmits(['userIsLogged'])
 
@@ -31,32 +34,43 @@ function doLogin() {
   }
   fetch(URL + "/doLogin", requestOptions)
     .then(async response => {
-      const data = await response.json();
-      // check for error response
-      if (!response.ok) {
+      if (response.ok == false) {
         // get error message from body or default to response statusText
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
+        const error = response.statusText
+        if (response.status == 403) {
+          if(userLogin.login != ""){
+            // Put login into the message store to retrieve it in the new user page
+            messageStore.setMessage(userLogin.login)
+          }
+          router.push({ name: 'usernotfound' })
+        } else {
+          return Promise.reject(error)
+        }
       }
-      
-      user.type = data.type;
-      user.id = data.id;
-      user.login = data.login
-      user.isDeleted = data.isDeleted;
-      user.isActive = data.isActive;
-      user.login = data.login;
-      user.passwd = data.passwd;
-      
-      userStore.setUser(user)
-      router.push({
-        name: 'mylist',
-      })
-      emit("userIsLogged")
+      if (response.ok == true) {
+        const data = await response.json();
+        user.type = data.type;
+        user.id = data.id;
+        user.login = data.login
+        user.isDeleted = data.isDeleted;
+        user.isActive = data.isActive;
+        user.login = data.login;
+        user.passwd = data.passwd;
+        
+        userStore.setUser(user)
+        router.push({
+          name: 'mylist',
+        })
+        emit("userIsLogged")
+      }
     })
+    // check for error response
     .catch(error => {
       // this.errorMessage = error;
-      console.error("There was an error!", error)
-      router.push({ name: 'error' })
+        console.error(error)
+        if (error == "Forbidden"){
+          router.push({ name: 'error' })
+        }
     })
 }
 

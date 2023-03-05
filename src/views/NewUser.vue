@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
+import { useMessageStore } from '../stores/MessageStore'
 import MyGlicUser from "../models/MyGlicUser"
 
 const userURL = "http://localhost:8180/v1/user"
 
 const userStore = useUserStore()
-
+const messageStore = useMessageStore()
 
 const user: MyGlicUser = {
   type: "userImp",
   id: null,
   isDeleted: false,
   isActive: true,
-  login: "",
+  login: messageStore.message,
   passwd: "",
 }
 
