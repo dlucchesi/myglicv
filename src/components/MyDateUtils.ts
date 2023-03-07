@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs'
+import * as dayjs from 'dayjs' // import dayjs
 import 'dayjs/locale/pt-br' // import locale
 dayjs.locale('pt-br') // set locale
 
@@ -10,7 +10,7 @@ export function getTime(date?: Date) {
   return date != null ? date.getTime() : 0;
 }
 
-export function getTimeFromString(date?: String) {
+export function getTimeFromString(date?: string) {
   if (date != null) {
     return dayjs(date, TIMESTAMP_FORMAT).toDate().getTime()
   } else {
@@ -18,9 +18,9 @@ export function getTimeFromString(date?: String) {
   }   
 }
 
-export function getTimestampFromStr(date: String, time: String) {
+export function getTimestampFromStr(date: string, time: string) {
   let finalTimestamp = date + " " + time
-  return dayjs(finalTimestamp, TIMESTAMP_FORMAT)
+  return dayjs(finalTimestamp, TIMESTAMP_FORMAT).toDate()
 }
 
 export function formatDateFromStr(date: Date) {
@@ -31,6 +31,6 @@ export function formatTimeFromStr(time: Date) {
   return dayjs(time, TIME_FORMAT).format(TIME_FORMAT)
 }
 
-export function formatTimestampFromDate(date: Date): String {
-  return dayjs(date, TIMESTAMP_FORMAT).format(TIMESTAMP_FORMAT)
+export function formatTimestampFromDate(date: Date): string {
+  return dayjs(date, TIMESTAMP_FORMAT).format(TIMESTAMP_FORMAT).toString()
 }

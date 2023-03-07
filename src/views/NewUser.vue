@@ -2,21 +2,14 @@
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
 import { useMessageStore } from '../stores/MessageStore'
-import MyGlicUser from "../models/MyGlicUser"
+import { MyGlicUser, createUserBlank } from "../models/MyGlicUser"
 
 const userURL = "http://localhost:8180/v1/user"
 
 const userStore = useUserStore()
 const messageStore = useMessageStore()
 
-const user: MyGlicUser = {
-  type: "userImp",
-  id: null,
-  isDeleted: false,
-  isActive: true,
-  login: messageStore.message,
-  passwd: "",
-}
+const user: MyGlicUser = createUserBlank()
 
 function saveUser() {
   const requestOptions = {
@@ -43,7 +36,7 @@ function saveUser() {
       }
       userStore.setUser(userRet)
       console.log(userRet)
-      if (userStore.user.id != null) {
+      if (userRet.id != null) {
         router.push({
           name: 'mylist',
         })
@@ -70,7 +63,7 @@ function saveUser() {
               New User
           </h1>
           
-          <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submit">
+          <form class="space-y-4 md:space-y-6">
             <div>
               <label for="login" 
                   class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Login (E-mail)</label>
@@ -79,7 +72,6 @@ function saveUser() {
                   name="login" 
                   id="login"
                   placeholder="youremail@yourdomain.com" 
-                  required="Empty login!!!" 
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
             <div>
@@ -89,7 +81,6 @@ function saveUser() {
                   name="password" 
                   id="password" 
                   placeholder="*****" 
-                  required="Empty password!!!"
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
               
