@@ -85,7 +85,7 @@ function doLogin() {
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
               User
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submit">
+          <form class="space-y-4 md:space-y-6" v-on:submit.prevent="">
             <div>
               <label for="email" 
                   class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Your email</label>
@@ -94,7 +94,6 @@ function doLogin() {
                   name="email" 
                   id="email"
                   placeholder="name@domain.com" 
-                  required="Empty e-mail!!!" 
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
             <div>
@@ -104,7 +103,6 @@ function doLogin() {
                   name="password" 
                   id="password" 
                   placeholder="••••••••" 
-                  required="Empty password!!!"
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
 
@@ -133,8 +131,8 @@ function doLogin() {
                 <h2>Don’t have an account yet? </h2>
                 <button type="button" @click="router.push({name: 'newuser'})" 
                       class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Sign up
-                  </button>
+                  Sign up
+                </button>
             </p>
           </form>
         </div>

@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
 import { useMeasureStore } from '../stores/MeasureStore'
-import { MyGlicUser } from "../models/MyGlicUser"
-import { MyGlicMeasure } from "../models/MyglicMeasure"
+import { MyGlicUser, createUserBlank } from "../models/MyGlicUser"
+import { MyGlicMeasure, createMeasureBlank } from "../models/MyglicMeasure"
 import { formatDateFromStr, formatTimeFromStr } from "../components/MyDateUtils";
 
 const measureURL = "http://localhost:8180/v1/measure"
@@ -13,10 +13,10 @@ const userURL = "http://localhost:8180/v1/user"
 const userStore = useUserStore()
 const measureStore = useMeasureStore()
 
-const userLogged: MyGlicUser = userStore.user
-const measure: MyGlicMeasure = measureStore.measure
+const userLogged:MyGlicUser = userStore.user || createUserBlank()
+const measure:MyGlicMeasure = measureStore.measure || createMeasureBlank()
 
-if (userLogged.login == "") {
+if (userLogged == null) {
   router.push({
     name: 'login',
   })
@@ -30,8 +30,8 @@ if (measure == null || (measure.id == null || measure.id == 0)) {
 }
 
 // Issue5: need to separate date and time
-const mDate = ref(measure.dtEntry.split(" ")[0])
-const mTime = ref(measure.dtEntry.split(" ")[1])
+const mDate = ref(formatDateFromStr(measure.dtEntry))
+const mTime = ref(formatTimeFromStr(measure.dtEntry))
 
 
 function inactivateMeasure() {
@@ -71,7 +71,7 @@ function inactivateMeasure() {
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
               Measure
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#" @submit.prevent="submit">
+          <form class="space-y-4 md:space-y-6">
             <div>
               <label for="date" 
                   class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date</label>

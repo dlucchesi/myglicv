@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import router from '../plugins/router'
 import { useUserStore } from '../stores/userStore'
-import { MyGlicUser } from "../models/MyGlicUser"
-import { MyglicMeasure } from "../models/MyglicMeasure"
+import { MyGlicUser,createUserBlank } from "../models/MyGlicUser"
+import { MyGlicMeasure } from "../models/MyglicMeasure"
 
 import { getTimestampFromStr } from "../components/MyDateUtils";
 
@@ -12,8 +12,9 @@ const measureURL = "http://localhost:8180/v1/measure"
 const userURL = "http://localhost:8180/v1/user"
 
 const userStore = useUserStore()
-const userLogged: MyGlicUser = userStore.user
-let measure: MyglicMeasure = {
+let userLogged:MyGlicUser = userStore.user || createUserBlank()
+
+let measure: MyGlicMeasure = {
   type: "measureImp",
   id: null,
   isDeleted: false,
@@ -72,7 +73,7 @@ function saveMeasure() {
           <h1 class="text-xl font-bold leading-tight tracking-tight text-light-900 md:text-2xl dark:text-white">
               Measure
           </h1>
-          <form class="space-y-1 md:space-y-4" action="#" @submit.prevent="submit">
+          <form class="space-y-1 md:space-y-4">
             <div>
               <label for="date" 
                   class="block mb-2 text-sm font-medium text-light-900 dark:text-white">Date</label>
@@ -81,7 +82,6 @@ function saveMeasure() {
                   name="date" 
                   id="date"
                   placeholder="2023.01.01" 
-                  required="Empty date!!!" 
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
 
@@ -93,7 +93,6 @@ function saveMeasure() {
                   name="time" 
                   id="time"
                   placeholder="00:00" 
-                  required="Empty time!!!" 
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-100 dark:focus:border-pink-100">
             </div>
 
@@ -104,7 +103,6 @@ function saveMeasure() {
                   name="measureEntry" 
                   id="measureEntry" 
                   placeholder="70 - 120" 
-                  required="Empty entry!!!"
                   class="bg-gray-50 border border-gray-300 text-light-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
 
