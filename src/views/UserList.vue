@@ -148,8 +148,8 @@ retrieveList(userLogged.id as number)
                               disabled
                               class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">{{ measure.dtEntry }}</td>
                         <td class="whitespace-nowrap px-4 py-4">{{ formatTimestampFromDate(measure.dtEntry) }}</td>
+                        <td class="whitespace-nowrap px-6 py-4">{{ measure.measureEntry }}</td>
                         <td class="whitespace-nowrap px-6 py-4">{{ measure.obs }}</td>
                         <td class="whitespace-nowrap px-4 py-4 font-medium">
                           <button @click="inactivate(measure)"

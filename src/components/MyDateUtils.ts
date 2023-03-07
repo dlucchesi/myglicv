@@ -32,5 +32,5 @@ export function formatTimeFromStr(time: Date) {
 }
 
 export function formatTimestampFromDate(date: Date): string {
-  return dayjs(date, TIMESTAMP_FORMAT).format(TIMESTAMP_FORMAT)
+  return dayjs(date, TIMESTAMP_FORMAT).format(TIMESTAMP_FORMAT).toString()
 }
