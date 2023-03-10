@@ -4,7 +4,8 @@ import { useUserStore } from '../stores/userStore'
 import { useMessageStore } from '../stores/MessageStore'
 import { MyGlicUser, createUserBlank } from "../models/MyGlicUser"
 
-const userURL = "http://localhost:8180/v1/user"
+// const userURL = "http://localhost:8180/v1/user"
+const userURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/user"
 
 const userStore = useUserStore()
 const messageStore = useMessageStore()

@@ -7,7 +7,8 @@ import { MyGlicUser } from "../models/MyGlicUser"
 
 const userStore = useUserStore()
 const messageStore = useMessageStore()
-const URL = "http://localhost:8180/v1/user"
+// const userURL = "http://localhost:8180/v1/user"
+const userURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/user"
 const usernotfound:boolean = false
 
 const emit = defineEmits(['userIsLogged'])
@@ -32,7 +33,7 @@ function doLogin() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userLogin)
   }
-  fetch(URL + "/doLogin", requestOptions)
+  fetch(userURL + "/doLogin", requestOptions)
     .then(async response => {
       if (response.ok == false) {
         // get error message from body or default to response statusText

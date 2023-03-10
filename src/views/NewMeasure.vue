@@ -7,9 +7,10 @@ import { MyGlicMeasure } from "../models/MyglicMeasure"
 
 import { getTimestampFromStr } from "../components/MyDateUtils";
 
-
-const measureURL = "http://localhost:8180/v1/measure"
-const userURL = "http://localhost:8180/v1/user"
+// const measureURL = "http://localhost:8180/v1/measure"
+const measureURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/measure"
+// const userURL = "http://localhost:8180/v1/user"
+const userURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/user"
 
 const userStore = useUserStore()
 let userLogged:MyGlicUser = userStore.user || createUserBlank()

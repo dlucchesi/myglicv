@@ -7,7 +7,10 @@ import { MyGlicUser,createUserBlank } from "../models/MyGlicUser"
 import { MyGlicMeasure,createMeasureAny } from "../models/MyglicMeasure"
 import { formatTimestampFromDate } from "../components/MyDateUtils"
 
-const URL = "http://localhost:8180/v1/measure"
+// const measureURL = "http://localhost:8180/v1/measure"
+const measureURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/measure"
+// const userURL = "http://localhost:8180/v1/user"
+const userURL = import.meta.env.VITE_MYGLICV_API_URL + import.meta.env.VITE_MYGLICV_API_PORT + "/" + import.meta.env.VITE_MYGLICV_API_VERSION + "/user"
 
 const userStore = useUserStore()
 const measureStore = useMeasureStore()
@@ -49,10 +52,6 @@ function orderMeasuresByDate() {
       return 0
     }
   })
-  // let c:Number = 1
-  // uMs.value.forEach((element:MyGlicMeasure) => {
-  //   element.count = c++
-  // })
 }
 
 function retrieveList(userId: number) {
@@ -60,7 +59,7 @@ function retrieveList(userId: number) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   }
-  fetch(URL + "/userId/" + userId, requestOptions)
+  fetch(measureURL + "/userId/" + userId, requestOptions)
     .then(async response => {
       const data = await response.json();
       // check for error response
