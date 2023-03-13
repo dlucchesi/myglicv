@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from './plugins/router'
-import { MyGlicUser } from "./models/MyGlicUser"
 import { useUserStore } from './stores/userStore'
 
 const userStore = useUserStore()
