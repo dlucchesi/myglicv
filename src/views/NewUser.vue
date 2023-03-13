@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '../plugins/router'
-import { useUserStore } from '../stores/userStore'
+import { useUserStore } from '../stores/UserStore'
 import { useMessageStore } from '../stores/MessageStore'
 import { MyGlicUser, createUserBlank } from "../models/MyGlicUser"
 

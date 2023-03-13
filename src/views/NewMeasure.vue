@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from '../plugins/router'
-import { useUserStore } from '../stores/userStore'
+import { useUserStore } from '../stores/UserStore'
 import { MyGlicUser,createUserBlank } from "../models/MyGlicUser"
 import { MyGlicMeasure } from "../models/MyglicMeasure"
 

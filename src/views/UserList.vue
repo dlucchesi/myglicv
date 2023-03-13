@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
-import { useUserStore } from '../stores/userStore'
+import { useUserStore } from '../stores/UserStore'
 import { useMeasureStore } from '../stores/MeasureStore'
 import router from '../plugins/router'
 import { MyGlicUser,createUserBlank } from "../models/MyGlicUser"
